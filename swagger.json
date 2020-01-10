@@ -1,0 +1,305 @@
+{
+
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "robo rest api server",
+		"description": "RoboApp Node.js Application API",
+		"license": {
+			"name": "MIT",
+			"url": "https://opensource.org/licenses/MIT"
+		}
+	},
+	"host": "localhost:8080",
+	"basePath": "/api/v1",
+	"tags": [
+		{
+			"name": "products",
+			"description": "API for products in the system"
+		},
+		{
+			"name": "Auth",
+			"description": "API for authentication in the system"
+		},
+		{
+			"name": "orders",
+			"description": "API for orders in the system"
+		}
+	],
+	"schemes": [
+		"http",
+		"https"
+	],
+	"consumes": [
+		"application/json"
+	],
+	"produces": [
+		"application/json"
+	],
+	"paths": {
+		"/products": {
+			"post": {
+				"tags": [
+					"products"
+				],
+				"description": "Create new products in system",
+				"parameters": [
+					{
+						"name": "products",
+						"in": "body",
+						"description": "productss that we want to create",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "New products is created",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"products"
+				],
+				"summary": "Get all products in system",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				}
+			}
+		},
+		"/products/:productId": {
+			"parameters": [
+				{
+					"name": "productId",
+					"in": "path",
+					"required": true,
+					"description": "ID of products that we want to find",
+					"type": "string"
+				}
+			],
+			"get": {
+				"tags": [
+					"products"
+				],
+				"summary": "Get product with the specified id",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				}
+			},
+			"patch": {
+				"summary": "Update products with give ID",
+				"tags": [
+					"products"
+				],
+				"parameters": [
+					{
+						"name": "products",
+						"in": "body",
+						"description": "products with new values of properties",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "products is updated",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				}
+			}
+		},
+		"/orders": {
+			"post": {
+				"tags": [
+					"orders"
+				],
+				"description": "Create new orders in system",
+				"parameters": [
+					{
+						"name": "order",
+						"in": "body",
+						"description": "order that we want to create",
+						"schema": {
+							"$ref": "#/definitions/orders"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "New order is created",
+						"schema": {
+							"$ref": "#/definitions/orders"
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"orders"
+				],
+				"summary": "Get all orders in system",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/orders"
+						}
+					}
+				}
+			}
+		},
+		"/products/login": {
+			"post": {
+				"tags": [
+					"Auth"
+				],
+				"description": "products login in system",
+				"parameters": [
+					{
+						"name": "credentials",
+						"in": "body",
+						"description": "products credentials for login",
+						"schema": {
+							"$ref": "#/definitions/Login"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Login token and products data",
+						"schema": {
+							"$ref": "#"
+						}
+					}
+				}
+			}
+		},
+		"/orders/:orderId": {
+			"parameters": [
+				{
+					"name": "orderId",
+					"in": "path",
+					"required": true,
+					"description": "ID of order that we want to find",
+					"type": "string"
+				}
+			],
+			"get": {
+				"tags": [
+					"orders"
+				],
+				"parameters": [
+					{
+						"name": "orders",
+						"in": "body",
+						"description": "get order with orderId in system",
+						"schema": {
+							"$ref": "#/definitions/orders"
+						}
+					}
+				],
+				"summary": "Get all orders in system",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/orders"
+						}
+					}
+				}
+			},
+			"delete": {
+				"summary": "Delete order with give ID",
+				"tags": [
+					"orders"
+				],
+				"parameters": [
+					{
+						"name": "orders",
+						"in": "path",
+						"description": "order with new values of properties",
+						"schema": {
+							"$ref": "#/definitions/orders"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Student is deleted",
+						"schema": {
+							"$ref": "#/definitions/order"
+						}
+					}
+				}
+			}
+		}
+	},
+
+	"securityDefinitions": {
+		"Bearer": {
+			"type": "apiKey",
+			"in": "header",
+			"name": "Authorization"
+		}
+	},
+	"security": [
+		{
+			"jwt": []
+		}
+	],
+	"definitions": {
+		"product": {
+			"properties": {
+				"name": { "type": "string" },
+				"price": { "type": "number" }
+			}
+		},
+		"products": {
+			"type": "array",
+			"$ref": "#/definitions/products"
+		},
+		"orders": {
+			"properties": {
+				"productId": { "type": "string" },
+				"quantity": { "type": "number" }
+		},
+		"orders": {
+			"type": "array",
+			"$ref": "#/definitions/Student"
+		},
+		"Login": {
+			"properties": {
+				"username": { "type": "string" },
+				"password": { "type": "string" }
+			}
+		}
+	}
+ }
+}
