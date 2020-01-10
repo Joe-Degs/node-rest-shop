@@ -20,8 +20,8 @@ console.log( `mongodb+srv://norkplim:${process.env.MONGO_PASSWRD}@node-rest-shop
 	 	}
 	);
 })().then(res => console.log(res)).catch(err => console.log(err));
-//App midlewares
 
+//App midlewares
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
