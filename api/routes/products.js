@@ -46,12 +46,13 @@ router.post('/', (req, res, next) => {
 			//console.log(result);
 			res.status(201).json({
 				message: 'Your product has been created',
-				createdProduct: {
+				newProduct: {
 					name: result.name,
 					price: result.price,
 					_id: result._id,
 					request: {
 						type: 'GET',
+						description: 'GET_UPDATED_PRODUCT',
 						url: 'http://localhost:8080/api/v1/products/' + result._id
 					}
 				}
