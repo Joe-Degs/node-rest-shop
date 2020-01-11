@@ -93,14 +93,17 @@ router.get('/:productID', (req, res, next) => {
 //takes an array of containing an object eg.{propName: '', value: ''}
 router.patch('/:productID', (req, res, next) => {
 	const id = req.params.productID;
-	const updateOpts = {};
+	const prodUpdateObj = req.body.reduce((acc, el) => {
+		acc[el.propName] = el.value;
+		return acc;
+	}, {});
 
 	//TODO:: use a reduce function on the array.
-	for (const opts of req.body) {
-		updateOpts[opts.propName] = opts.value;
-	}
+	// for (const el of req.body) {
+	// 	updateOpts[el.propName] = el.value;
+	// }
 
-	Product.update({ _id: id }, {$set: updateOpts}).exec()
+	Product.updateOne({ _id: id }, {$set: prodUpdateObj}).exec()
 		.then(result => {
 			//console.log(result);
 			res.status(200).json({
@@ -121,7 +124,7 @@ router.patch('/:productID', (req, res, next) => {
 
 router.delete('/:productID', (req, res, next) => {
 	const id = req.params.productID;
-	Product.remove({ _id: id }).exec()
+	Product.deleteOne({ _id: id }).exec()
 		.then(result => {
 			//console.log(result);
 			res.status(200).json({
