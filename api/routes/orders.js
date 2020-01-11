@@ -4,11 +4,13 @@ const mongoose = require('mongoose');
 
 
 const Order = require('../models/order');
+const Product = require('../models/product');
 
 
 
 router.get('/', (req, res, next) => {
-	Order.find().select('_id quantity product').exec()
+	Order.find().select('_id quantity product')
+		.populate('product', 'name').exec()
 		.then(result => {
 			console.log(result);
 			res.status(200).json({
@@ -33,14 +35,23 @@ router.get('/', (req, res, next) => {
 		});
 });
 
+// Handles Incoming post request /orders
 router.post('/', (req, res, next) => {
-	const order = new Order({
-		_id: mongoose.Types.ObjectId(),
-		product: req.body.productId,
-		quantity: req.body.quantity
-	}) 
+	Product.findById(req.body.productId).exec()
+		.then(product => {
+			if (!product) {
+				return res.status(404).json({
+					message: 'Product not Found'
+				});
+			}
+			const order = new Order({
+				_id: mongoose.Types.ObjectId(),
+				product: req.body.productId,
+				quantity: req.body.quantity
+			});
 
-	order.save()
+			return order.save();
+		})
 		.then(result => {
 			//console.log(result);
 			res.status(201).json({
@@ -67,7 +78,8 @@ router.post('/', (req, res, next) => {
 router.get('/:orderID', (req, res, next) => {
 	const id = req.params.orderID;
 
-	Order.findById(id).select('_id quantity product').exec()
+	Order.findById(id).select('_id quantity product')
+		.populate('product', 'name price').exec()
 		.then(result => {
 			if(result) {
 				res.status(200).json({
@@ -79,7 +91,7 @@ router.get('/:orderID', (req, res, next) => {
 					}
 				});
 			} else {
-				res.status(404).json({ message: 'No response for your request'});
+				res.status(404).json({ message: 'Order not found' });
 			}
 		})
 		.catch(err => {
@@ -100,7 +112,7 @@ router.delete('/:orderID', (req, res, next) => {
 					description: 'ADD_NEW_ORDER',
 					url: 'http://localhost:8080/api/v1/products',
 					body: {
-						productId: 'mongoose.Schema.Types.ObjectId',
+						productId: 'ObjectId',
 						quantity: 'Number'
 					}
 				}
