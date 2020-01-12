@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
 const swaggerJson = require('./swagger.json');
-console.log( `mongodb+srv://norkplim:${process.env.MONGO_PASSWRD}@node-rest-shop-gxguh.mongodb.net/test?retryWrites=true&w=majority`);
+
 
 (async () => { 
 	await mongoose.connect(
@@ -19,6 +19,9 @@ console.log( `mongodb+srv://norkplim:${process.env.MONGO_PASSWRD}@node-rest-shop
 	   	useUnifiedTopology: true  
 	 	}
 	);
+	console.log('mongodb+srv://norkplim:'
+	   + process.env.MONGO_PASSWRD + 
+	   '@node-rest-shop-gxguh.mongodb.net/test?retryWrites=true&w=majority');
 })().then(res => console.log(res)).catch(err => console.log(err));
 
 //App midlewares
