@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const swagger = require('swagger-ui-express');
 const mongoose = require('mongoose');
 
-
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
 const swaggerJson = require('./swagger.json');
@@ -26,6 +25,7 @@ const swaggerJson = require('./swagger.json');
 
 //App midlewares
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
