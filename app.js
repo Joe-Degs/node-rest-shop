@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
+const userRouter = require('./api/routes/users');
 const swaggerJson = require('./swagger.json');
 
 
@@ -48,7 +49,8 @@ app.use('/api/v1/docs', swagger.serve, swagger.setup(swaggerJson));
 // Route Middlewares
 
 app.use('/api/v1/products', productRouter)
-	.use('/api/v1/orders', orderRouter);
+	.use('/api/v1/orders', orderRouter)
+	.use('/api/v1/users', userRouter);
 
 // Error Handling Middlewares
 
