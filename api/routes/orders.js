@@ -86,7 +86,7 @@ router.get('/:orderID', (req, res, next) => {
 					order: result,
 					request: {
 						type: 'GET',
-						description: 'GET_ALL_ORDERS',
+							description: 'GET_ALL_ORDERS',
 						url: 'http://localhost:8080/api/v1/orders'
 					}
 				});

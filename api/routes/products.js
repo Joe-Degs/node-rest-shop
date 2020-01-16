@@ -30,7 +30,7 @@ const Product = require('../models/product');
 
 
 router.get('/', (req, res, next) => {
-	Product.find().select('name price _id').exec()
+	Product.find().select('name price _id productImage').exec()
 		.then(result => {
 			const response = {
 				count: result.length,
@@ -39,6 +39,7 @@ router.get('/', (req, res, next) => {
 						name: el.name,
 						price: el.price,
 						_id: el._id,
+						productImage: el.productImage,
 						request: {
 							type: 'GET',
 							description: 'GET_PRODUCT_DETAILS',
@@ -58,12 +59,14 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/', upload.single('productImage'), (req, res, next) => {
+	const path = 'http://localhost:8080/';
 	console.log(req.file);
+	
 	const product = new Product({
 		_id: new mongoose.Types.ObjectId(),
 		name: req.body.name,
 		price: req.body.price,
-		productImage: req.file.path
+		productImage: path + req.file.path
 	});
 
 	product.save()
@@ -75,6 +78,7 @@ router.post('/', upload.single('productImage'), (req, res, next) => {
 					name: result.name,
 					price: result.price,
 					_id: result._id,
+					productImage: result.productImage,
 					request: {
 						type: 'GET',
 						description: 'GET_UPDATED_PRODUCT',
@@ -93,7 +97,7 @@ router.post('/', upload.single('productImage'), (req, res, next) => {
 router.get('/:productID', (req, res, next) => {
 	const id = req.params.productID;
 
-	Product.findById(id).select('name price _id').exec()
+	Product.findById(id).select('name price _id productImage').exec()
 		.then(result => {
 			//console.log(result);
 			if (result) {
@@ -118,6 +122,10 @@ router.get('/:productID', (req, res, next) => {
 //takes an array of containing an object eg.{propName: '', value: ''}
 router.patch('/:productID', (req, res, next) => {
 	const id = req.params.productID;
+
+	if(!Array.isArray(req.body)) 
+		req.body = [{...req.body}];
+	console.log(req.body);
 	const prodUpdateObj = req.body.reduce((acc, el) => {
 		acc[el.propName] = el.value;
 		return acc;
@@ -153,7 +161,7 @@ router.delete('/:productID', (req, res, next) => {
 		.then(result => {
 			//console.log(result);
 			res.status(200).json({
-				message: 'Product with _id:' + id + ' deleted',
+				message: 'Product with id:' + id + ' deleted',
 				request: {
 					type: 'POST',
 					description: 'ADD_NEW_PRODUCT',
