@@ -125,7 +125,9 @@ router.patch('/:productID', (req, res, next) => {
 
 	if(!Array.isArray(req.body)) 
 		req.body = [{...req.body}];
+
 	console.log(req.body);
+	
 	const prodUpdateObj = req.body.reduce((acc, el) => {
 		acc[el.propName] = el.value;
 		return acc;
