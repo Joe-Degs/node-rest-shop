@@ -1,5 +1,6 @@
 {
 	"env": {
-		"MONGO_PASSWRD": "amadbier404"
+		"MONGO_PASSWRD": "amadbier404",
+		"JWT_KEY": "absurd" 
 	}
 }
