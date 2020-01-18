@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const checkAuth = require('../auth/check-auth');
 
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
@@ -58,9 +59,10 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.post('/', upload.single('productImage'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
 	const path = 'http://localhost:8080/';
 	console.log(req.file);
+	console.log(req.userData);
 	
 	const product = new Product({
 		_id: new mongoose.Types.ObjectId(),
@@ -120,7 +122,7 @@ router.get('/:productID', (req, res, next) => {
 
 
 //takes an array of containing an object eg.{propName: '', value: ''}
-router.patch('/:productID', (req, res, next) => {
+router.patch('/:productID', checkAuth, (req, res, next) => {
 	const id = req.params.productID;
 
 	if(!Array.isArray(req.body)) 
@@ -157,7 +159,7 @@ router.patch('/:productID', (req, res, next) => {
 });
 
 
-router.delete('/:productID', (req, res, next) => {
+router.delete('/:productID', checkAuth, (req, res, next) => {
 	const id = req.params.productID;
 	Product.deleteOne({ _id: id }).exec()
 		.then(result => {

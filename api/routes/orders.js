@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../auth/check-auth');
 
 
 const Order = require('../models/order');
 const Product = require('../models/product');
 
 
-
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
 	Order.find().select('_id quantity product')
 		.populate('product', 'name').exec()
 		.then(result => {
@@ -36,7 +36,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Handles Incoming post request /orders
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
 	Product.findById(req.body.productId).exec()
 		.then(product => {
 			if (!product) {
@@ -75,7 +75,7 @@ router.post('/', (req, res, next) => {
 });
 
 
-router.get('/:orderID', (req, res, next) => {
+router.get('/:orderID', checkAuth, (req, res, next) => {
 	const id = req.params.orderID;
 
 	Order.findById(id).select('_id quantity product')
@@ -100,7 +100,7 @@ router.get('/:orderID', (req, res, next) => {
 });
 
 
-router.delete('/:orderID', (req, res, next) => {
+router.delete('/:orderID', checkAuth, (req, res, next) => {
 	const id = req.params.orderID;
 
 	Order.deleteOne({ _id: id }).exec()
@@ -124,5 +124,5 @@ router.delete('/:orderID', (req, res, next) => {
 });
 
 
-
+console.log(router);
 module.exports = router;
