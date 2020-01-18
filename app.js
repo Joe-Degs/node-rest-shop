@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const swagger = require('swagger-ui-express');
 const mongoose = require('mongoose');
 
+
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
 const userRouter = require('./api/routes/users');
@@ -24,7 +25,7 @@ const swaggerJson = require('./swagger.json');
 	   '@node-rest-shop-gxguh.mongodb.net/test?retryWrites=true&w=majority');
 })().then(res => console.log(res)).catch(err => console.log(err));
 
-//App midlewares
+//App midlewares 
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -39,21 +40,21 @@ app.use((req, res, next) => {
 	);
 	if(req.method === 'OPTIONS') {
 			res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-			return res.status(200).json({});
+			res.status(200).json({});
 	}
 	next();
 })
 
 app.use('/api/v1/docs', swagger.serve, swagger.setup(swaggerJson));
 
-// Route Middlewares
 
+// Route Middlewares
 app.use('/api/v1/products', productRouter)
 	.use('/api/v1/orders', orderRouter)
 	.use('/api/v1/users', userRouter);
 
-// Error Handling Middlewares
 
+// Error Handling Middlewares
 app.use((req, res, next) => {
 	const error = new Error('Route not found');
 	error.status = 404;

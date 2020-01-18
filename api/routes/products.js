@@ -35,16 +35,16 @@ router.get('/', (req, res, next) => {
 		.then(result => {
 			const response = {
 				count: result.length,
-				products: result.map(el => {
+				products: result.map(item => {
 					return {
-						name: el.name,
-						price: el.price,
-						_id: el._id,
-						productImage: el.productImage,
+						name: item.name,
+						price: item.price,
+						_id: item._id,
+						productImage: item.productImage,
 						request: {
 							type: 'GET',
 							description: 'GET_PRODUCT_DETAILS',
-							url: 'http://localhost:8080/api/v1/products/' + el._id
+							url: 'http://localhost:8080/api/v1/products/' + item._id
 						}
 					}
 				})
@@ -154,13 +154,14 @@ router.patch('/:productID', checkAuth, (req, res, next) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(200).json({ error: err });
+			return res.status(200).json({ error: err });
 		});
 });
 
 
 router.delete('/:productID', checkAuth, (req, res, next) => {
 	const id = req.params.productID;
+
 	Product.deleteOne({ _id: id }).exec()
 		.then(result => {
 			//console.log(result);
@@ -179,9 +180,9 @@ router.delete('/:productID', checkAuth, (req, res, next) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ error: err });
+			return res.status(500).json({ error: err });
 		});
-})
+});
 
 
 
