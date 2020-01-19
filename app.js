@@ -12,18 +12,23 @@ const userRouter = require('./api/routes/users');
 const swaggerJson = require('./swagger.json');
 
 
-(async () => { 
-	await mongoose.connect(
-	   `mongodb+srv://norkplim:${process.env.MONGO_PASSWRD}@node-rest-shop-gxguh.mongodb.net/test?retryWrites=true&w=majority`,
-	   {
-	   	useNewUrlParser: true,
-	   	useUnifiedTopology: true  
-	 	}
-	);
+(async () => {
+	try {
+		await mongoose.connect(
+		   `mongodb+srv://norkplim:${process.env.MONGO_PASSWRD}@node-rest-shop-gxguh.mongodb.net/test?retryWrites=true&w=majority`,
+		   {
+		   	useNewUrlParser: true,
+		   	useUnifiedTopology: true  
+		 	}
+		);
+	} catch(err) {
+		return { error : err }
+	}
 	console.log('mongodb+srv://norkplim:'
 	   + process.env.MONGO_PASSWRD + 
 	   '@node-rest-shop-gxguh.mongodb.net/test?retryWrites=true&w=majority');
-})().then(res => console.log(res)).catch(err => console.log(err));
+})()
+
 
 //App midlewares 
 app.use(morgan('dev'));
@@ -43,7 +48,7 @@ app.use((req, res, next) => {
 			res.status(200).json({});
 	}
 	next();
-})
+});
 
 app.use('/api/v1/docs', swagger.serve, swagger.setup(swaggerJson));
 
