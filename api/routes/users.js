@@ -37,9 +37,9 @@ router.post('/signup', (req, res, next) => {
 								error: err
 							});
 						});	
-				})
+				});
 			}				
-	})
+	});
 });
 
 
