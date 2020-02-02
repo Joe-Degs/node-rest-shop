@@ -31,8 +31,8 @@ exports.get_all_products = (req, res, next) => {
 
 exports.create_new_product = (req, res, next) => {
 	const path = 'http://localhost:8080/';
-	console.log(req.file);
-	console.log(req.userData);
+	//console.log(req.file);
+	//console.log(req.userData);
 	
 	const product = new Product({
 		_id: new mongoose.Types.ObjectId(),
@@ -94,11 +94,10 @@ exports.update_product = (req, res, next) => {
 
 	if(!Array.isArray(req.body)) 
 		req.body = [{...req.body}];
-
-	console.log(req.body);
+	//console.log(req.body);
 	
-	const prodUpdateObj = req.body.reduce((acc, el) => {
-		acc[el.propName] = el.value;
+	const prodUpdateObj = req.body.reduce((acc, item) => {
+		acc[item.propName] = .value;
 		return acc;
 	}, {});
 
