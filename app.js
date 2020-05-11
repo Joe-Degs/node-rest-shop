@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const swagger = require('swagger-ui-express');
 const mongoose = require('mongoose');
 
-
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
 const userRouter = require('./api/routes/users');
@@ -37,6 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
+// Cors headers
 app.use((req, res, next) => {
 	res.header('Acess-Control-Allow-Origin', '*');
 	res.header(
@@ -50,14 +50,12 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use('/api/v1/docs', swagger.serve, swagger.setup(swaggerJson));
-
+// app.use('/api/v1/docs', swagger.serve, swagger.setup(swaggerJson));
 
 // Route Middlewares
 app.use('/api/v1/products', productRouter)
 	.use('/api/v1/orders', orderRouter)
 	.use('/api/v1/users', userRouter);
-
 
 // Error Handling Middlewares
 app.use((req, res, next) => {
